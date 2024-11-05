@@ -11,7 +11,7 @@ class PresentButton: UIControl {
 
     private var circle: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.gray
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -26,7 +26,7 @@ class PresentButton: UIControl {
     private var timerLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = .systemFont(ofSize: 21, weight: .semibold)
+        label.font = .systemFont(ofSize: 13, weight: .semibold)
         label.text = "00:30:00"
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -62,13 +62,13 @@ class PresentButton: UIControl {
             circle.centerYAnchor.constraint(equalTo: centerYAnchor),
             circle.widthAnchor.constraint(equalToConstant: bounds.width),
             circle.heightAnchor.constraint(equalToConstant: bounds.height),
-            presentImageView.topAnchor.constraint(equalTo: circle.topAnchor, constant: 10),
-            presentImageView.leadingAnchor.constraint(equalTo: circle.leadingAnchor, constant: 10),
-            presentImageView.trailingAnchor.constraint(equalTo: circle.trailingAnchor, constant: -10),
-            timerLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            timerLabel.topAnchor.constraint(equalTo: presentImageView.bottomAnchor, constant: 16),
-            timerLabel.leadingAnchor.constraint(equalTo: circle.leadingAnchor, constant: 10),
-            timerLabel.trailingAnchor.constraint(equalTo: circle.trailingAnchor, constant: -10),
+            presentImageView.topAnchor.constraint(equalTo: circle.topAnchor, constant: bounds.height*0.06),
+            presentImageView.leadingAnchor.constraint(equalTo: circle.leadingAnchor, constant: bounds.width*0.297),
+            presentImageView.trailingAnchor.constraint(equalTo: circle.trailingAnchor, constant: -bounds.width*0.297),
+            presentImageView.heightAnchor.constraint(equalTo: circle.heightAnchor, multiplier: 0.59),
+            timerLabel.centerXAnchor.constraint(equalTo: circle.centerXAnchor),
+            timerLabel.leadingAnchor.constraint(equalTo: circle.leadingAnchor, constant: bounds.width*0.06),
+            timerLabel.bottomAnchor.constraint(equalTo: circle.bottomAnchor, constant: -bounds.height*0.173)
             ])
     }
     func startTimer() {
@@ -100,17 +100,6 @@ class PresentButton: UIControl {
             timerLabel.text = "00:\(minutes):\(secs)"
         }
     }
-    func animatePresent(delay: TimeInterval) {
-        UIView.animate(withDuration: 0.2, delay: delay, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: [.allowUserInteraction, .curveEaseIn, .autoreverse], animations: {
-            self.presentImageView.transform = CGAffineTransform(rotationAngle: .pi/8)
-            self.presentImageView.transform = CGAffineTransform(rotationAngle: .pi/(-8))
-        }) { finished in
-            if finished {
-                self.presentImageView.transform = CGAffineTransform(rotationAngle: .zero)
-            }
-        }
-    }
-    
     func animateKeyframe() {
         UIView.animateKeyframes(withDuration: 0.8, delay: 2, options: [.allowUserInteraction, .autoreverse], animations: {
             var progress = 0.0
